@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Calendar, Search, User, Menu } from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -36,9 +37,11 @@ export default function Header() {
           <Button variant="ghost" size="sm">
             <Search className="h-4 w-4" />
           </Button>
-          <Button variant="outline" size="sm">
-            <User className="h-4 w-4 mr-1" />
-            Sign In
+          <Button variant="outline" size="sm" asChild>
+            <Link to="/login">
+              <User className="h-4 w-4 mr-1" />
+              Sign In
+            </Link>
           </Button>
           <Button size="sm">Create Event</Button>
         </div>
@@ -73,9 +76,11 @@ export default function Header() {
               </a>
             </nav>
             <div className="flex flex-col gap-2 pt-4 border-t">
-              <Button variant="outline" size="sm">
-                <User className="h-4 w-4 mr-1" />
-                Sign In
+              <Button variant="outline" size="sm" asChild>
+                <Link to="/login">
+                  <User className="h-4 w-4 mr-1" />
+                  Sign In
+                </Link>
               </Button>
               <Button size="sm">Create Event</Button>
             </div>
