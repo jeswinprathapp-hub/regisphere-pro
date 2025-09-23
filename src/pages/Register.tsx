@@ -1,4 +1,4 @@
-// Event Registration System - Login Page
+// Event Registration System - Register Page
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -6,20 +6,22 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Calendar, Mail, Lock, Eye, EyeOff, ArrowLeft } from "lucide-react";
+import { Calendar, Mail, Lock, Eye, EyeOff, ArrowLeft, User } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import heroImage from "@/assets/hero-events.jpg";
 
-export default function Login() {
+export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    rememberMe: false,
+    confirmPassword: "",
+    acceptTerms: false,
   });
   
-  const { signIn, loading, user } = useAuth();
+  const { signUp, loading, user } = useAuth();
   const navigate = useNavigate();
 
   // Redirect if already logged in
@@ -31,10 +33,19 @@ export default function Login() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const { error } = await signIn(formData.email, formData.password);
-    if (!error) {
-      navigate('/');
+    
+    if (formData.password !== formData.confirmPassword) {
+      // Handle password mismatch - this will be handled by the useAuth hook
+      return;
     }
+    
+    if (!formData.acceptTerms) {
+      // Handle terms not accepted
+      return;
+    }
+    
+    const { error } = await signUp(formData.email, formData.password);
+    // Don't navigate on success - user needs to confirm email first
   };
 
   const handleInputChange = (field: string, value: string | boolean) => {
@@ -43,7 +54,7 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex">
-      {/* Left Side - Login Form */}
+      {/* Left Side - Register Form */}
       <div className="flex-1 flex items-center justify-center p-8 bg-background">
         <div className="w-full max-w-md space-y-8">
           {/* Header */}
@@ -60,9 +71,9 @@ export default function Login() {
                   EventHub
                 </span>
               </div>
-              <h1 className="text-3xl font-bold">Welcome Back</h1>
+              <h1 className="text-3xl font-bold">Create Account</h1>
               <p className="text-muted-foreground">
-                Sign in to your account to manage your events and registrations
+                Join thousands of professionals discovering amazing events
               </p>
             </div>
           </div>
@@ -95,13 +106,13 @@ export default function Login() {
             </div>
           </div>
 
-          {/* Login Form */}
+          {/* Register Form */}
           <Card className="shadow-card border-0 bg-gradient-card">
             <form onSubmit={handleSubmit}>
               <CardHeader className="space-y-1 pb-4">
-                <CardTitle className="text-xl">Sign In</CardTitle>
+                <CardTitle className="text-xl">Sign Up</CardTitle>
                 <CardDescription>
-                  Enter your credentials to access your account
+                  Create your account to start discovering events
                 </CardDescription>
               </CardHeader>
 
@@ -133,7 +144,7 @@ export default function Login() {
                     <Input
                       id="password"
                       type={showPassword ? "text" : "password"}
-                      placeholder="Enter your password"
+                      placeholder="Create a password"
                       value={formData.password}
                       onChange={(e) => handleInputChange("password", e.target.value)}
                       className="pl-10 pr-10 h-12"
@@ -149,26 +160,51 @@ export default function Login() {
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
-                    <Checkbox
-                      id="remember"
-                      checked={formData.rememberMe}
-                      onCheckedChange={(checked) => handleInputChange("rememberMe", !!checked)}
+                <div className="space-y-2">
+                  <Label htmlFor="confirmPassword" className="text-sm font-medium">
+                    Confirm Password
+                  </Label>
+                  <div className="relative">
+                    <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      id="confirmPassword"
+                      type={showConfirmPassword ? "text" : "password"}
+                      placeholder="Confirm your password"
+                      value={formData.confirmPassword}
+                      onChange={(e) => handleInputChange("confirmPassword", e.target.value)}
+                      className="pl-10 pr-10 h-12"
+                      required
                     />
-                    <Label
-                      htmlFor="remember"
-                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    <button
+                      type="button"
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground transition-smooth"
                     >
-                      Remember me
-                    </Label>
+                      {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </button>
                   </div>
-                  <Link
-                    to="/forgot-password"
-                    className="text-sm text-primary hover:text-primary-light transition-smooth"
+                </div>
+
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="terms"
+                    checked={formData.acceptTerms}
+                    onCheckedChange={(checked) => handleInputChange("acceptTerms", !!checked)}
+                    required
+                  />
+                  <Label
+                    htmlFor="terms"
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                   >
-                    Forgot password?
-                  </Link>
+                    I agree to the{" "}
+                    <Link to="/terms" className="text-primary hover:text-primary-light transition-smooth">
+                      Terms of Service
+                    </Link>{" "}
+                    and{" "}
+                    <Link to="/privacy" className="text-primary hover:text-primary-light transition-smooth">
+                      Privacy Policy
+                    </Link>
+                  </Label>
                 </div>
               </CardContent>
 
@@ -182,39 +218,25 @@ export default function Login() {
                   {loading ? (
                     <div className="flex items-center gap-2">
                       <div className="h-4 w-4 border-2 border-white/20 border-t-white rounded-full animate-spin" />
-                      Signing in...
+                      Creating account...
                     </div>
                   ) : (
-                    "Sign In"
+                    "Create Account"
                   )}
                 </Button>
 
                 <p className="text-center text-sm text-muted-foreground">
-                  Don't have an account?{" "}
+                  Already have an account?{" "}
                   <Link
-                    to="/register"
+                    to="/login"
                     className="text-primary hover:text-primary-light transition-smooth font-medium"
                   >
-                    Sign up for free
+                    Sign in here
                   </Link>
                 </p>
               </CardFooter>
             </form>
           </Card>
-
-          {/* Additional Links */}
-          <div className="text-center space-y-4 pt-6">
-            <p className="text-xs text-muted-foreground">
-              By signing in, you agree to our{" "}
-              <Link to="/terms" className="text-primary hover:text-primary-light transition-smooth">
-                Terms of Service
-              </Link>{" "}
-              and{" "}
-              <Link to="/privacy" className="text-primary hover:text-primary-light transition-smooth">
-                Privacy Policy
-              </Link>
-            </p>
-          </div>
         </div>
       </div>
 
@@ -232,20 +254,20 @@ export default function Login() {
         <div className="relative z-10 flex items-center justify-center p-12 text-white">
           <div className="max-w-lg text-center space-y-6">
             <h2 className="text-4xl font-bold leading-tight">
-              Join the Future of Event Management
+              Start Your Event Journey Today
             </h2>
             <p className="text-lg text-white/90">
-              Connect with thousands of professionals, discover amazing events, and grow your network with EventHub.
+              Create your account and unlock access to exclusive events, networking opportunities, and professional development.
             </p>
             
             <div className="grid grid-cols-1 gap-6 pt-8">
               <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
-                <div className="text-2xl font-bold mb-2">50,000+</div>
-                <div className="text-white/80">Events Successfully Managed</div>
+                <div className="text-2xl font-bold mb-2">1,000+</div>
+                <div className="text-white/80">Events Added Weekly</div>
               </div>
               <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
-                <div className="text-2xl font-bold mb-2">200,000+</div>
-                <div className="text-white/80">Happy Event Attendees</div>
+                <div className="text-2xl font-bold mb-2">95%</div>
+                <div className="text-white/80">User Satisfaction Rate</div>
               </div>
             </div>
           </div>

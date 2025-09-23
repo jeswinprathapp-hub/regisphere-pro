@@ -1,10 +1,12 @@
 import { Button } from "@/components/ui/button";
-import { Calendar, Search, User, Menu } from "lucide-react";
+import { Calendar, Search, User, Menu, LogOut } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { user, signOut, loading } = useAuth();
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -37,13 +39,35 @@ export default function Header() {
           <Button variant="ghost" size="sm">
             <Search className="h-4 w-4" />
           </Button>
-          <Button variant="outline" size="sm" asChild>
-            <Link to="/login">
-              <User className="h-4 w-4 mr-1" />
-              Sign In
-            </Link>
-          </Button>
-          <Button size="sm">Create Event</Button>
+          {user ? (
+            <>
+              <span className="text-sm text-muted-foreground">
+                {user.email}
+              </span>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={signOut}
+                disabled={loading}
+              >
+                <LogOut className="h-4 w-4 mr-1" />
+                Sign Out
+              </Button>
+              <Button size="sm">Create Event</Button>
+            </>
+          ) : (
+            <>
+              <Button variant="outline" size="sm" asChild>
+                <Link to="/login">
+                  <User className="h-4 w-4 mr-1" />
+                  Sign In
+                </Link>
+              </Button>
+              <Button size="sm" asChild>
+                <Link to="/register">Create Account</Link>
+              </Button>
+            </>
+          )}
         </div>
 
         {/* Mobile Menu Button */}
@@ -76,13 +100,35 @@ export default function Header() {
               </a>
             </nav>
             <div className="flex flex-col gap-2 pt-4 border-t">
-              <Button variant="outline" size="sm" asChild>
-                <Link to="/login">
-                  <User className="h-4 w-4 mr-1" />
-                  Sign In
-                </Link>
-              </Button>
-              <Button size="sm">Create Event</Button>
+              {user ? (
+                <>
+                  <span className="text-sm text-muted-foreground px-3">
+                    {user.email}
+                  </span>
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    onClick={signOut}
+                    disabled={loading}
+                  >
+                    <LogOut className="h-4 w-4 mr-1" />
+                    Sign Out
+                  </Button>
+                  <Button size="sm">Create Event</Button>
+                </>
+              ) : (
+                <>
+                  <Button variant="outline" size="sm" asChild>
+                    <Link to="/login">
+                      <User className="h-4 w-4 mr-1" />
+                      Sign In
+                    </Link>
+                  </Button>
+                  <Button size="sm" asChild>
+                    <Link to="/register">Create Account</Link>
+                  </Button>
+                </>
+              )}
             </div>
           </div>
         </div>
