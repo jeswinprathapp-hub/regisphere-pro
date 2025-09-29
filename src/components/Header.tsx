@@ -20,24 +20,26 @@ export default function Header() {
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-6">
-          <a href="#" className="text-sm font-medium hover:text-primary transition-smooth">
+          <Link to="/events" className="text-sm font-medium hover:text-primary transition-smooth">
             Browse Events
-          </a>
-          <a href="#" className="text-sm font-medium hover:text-primary transition-smooth">
+          </Link>
+          <Link to="/categories" className="text-sm font-medium hover:text-primary transition-smooth">
             Categories
-          </a>
-          <a href="#" className="text-sm font-medium hover:text-primary transition-smooth">
+          </Link>
+          <Link to="/about" className="text-sm font-medium hover:text-primary transition-smooth">
             About
-          </a>
-          <a href="#" className="text-sm font-medium hover:text-primary transition-smooth">
+          </Link>
+          <Link to="/contact" className="text-sm font-medium hover:text-primary transition-smooth">
             Contact
-          </a>
+          </Link>
         </nav>
 
         {/* Desktop Actions */}
         <div className="hidden md:flex items-center gap-3">
-          <Button variant="ghost" size="sm">
-            <Search className="h-4 w-4" />
+          <Button variant="ghost" size="sm" asChild>
+            <Link to="/events">
+              <Search className="h-4 w-4" />
+            </Link>
           </Button>
           {user ? (
             <>
@@ -53,7 +55,9 @@ export default function Header() {
                 <LogOut className="h-4 w-4 mr-1" />
                 Sign Out
               </Button>
-              <Button size="sm">Create Event</Button>
+              <Button size="sm" asChild>
+                <Link to="/create-event">Create Event</Link>
+              </Button>
             </>
           ) : (
             <>
@@ -86,18 +90,18 @@ export default function Header() {
         <div className="md:hidden border-t bg-background">
           <div className="container py-4 space-y-4">
             <nav className="space-y-3">
-              <a href="#" className="block text-sm font-medium hover:text-primary transition-smooth">
+              <Link to="/events" className="block text-sm font-medium hover:text-primary transition-smooth">
                 Browse Events
-              </a>
-              <a href="#" className="block text-sm font-medium hover:text-primary transition-smooth">
+              </Link>
+              <Link to="/categories" className="block text-sm font-medium hover:text-primary transition-smooth">
                 Categories
-              </a>
-              <a href="#" className="block text-sm font-medium hover:text-primary transition-smooth">
+              </Link>
+              <Link to="/about" className="block text-sm font-medium hover:text-primary transition-smooth">
                 About
-              </a>
-              <a href="#" className="block text-sm font-medium hover:text-primary transition-smooth">
+              </Link>
+              <Link to="/contact" className="block text-sm font-medium hover:text-primary transition-smooth">
                 Contact
-              </a>
+              </Link>
             </nav>
             <div className="flex flex-col gap-2 pt-4 border-t">
               {user ? (
@@ -114,7 +118,9 @@ export default function Header() {
                     <LogOut className="h-4 w-4 mr-1" />
                     Sign Out
                   </Button>
-                  <Button size="sm">Create Event</Button>
+                  <Button size="sm" asChild>
+                    <Link to="/create-event">Create Event</Link>
+                  </Button>
                 </>
               ) : (
                 <>

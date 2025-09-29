@@ -1,4 +1,5 @@
 import { Calendar, Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
@@ -28,17 +29,17 @@ export default function Footer() {
             <h3 className="text-lg font-semibold">Quick Links</h3>
             <ul className="space-y-2">
               {[
-                "Browse Events",
-                "Create Event", 
-                "Event Categories",
-                "Pricing",
-                "About Us",
-                "Help Center"
+                { name: "Browse Events", path: "/events" },
+                { name: "Create Event", path: "/create-event" }, 
+                { name: "Event Categories", path: "/categories" },
+                { name: "Pricing", path: "/contact" },
+                { name: "About Us", path: "/about" },
+                { name: "Help Center", path: "/contact" }
               ].map((link, index) => (
                 <li key={index}>
-                  <a href="#" className="text-white/80 hover:text-white transition-smooth">
-                    {link}
-                  </a>
+                  <Link to={link.path} className="text-white/80 hover:text-white transition-smooth">
+                    {link.name}
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -57,9 +58,9 @@ export default function Footer() {
                 "Education"
               ].map((category, index) => (
                 <li key={index}>
-                  <a href="#" className="text-white/80 hover:text-white transition-smooth">
+                  <Link to={`/categories?filter=${category.toLowerCase()}`} className="text-white/80 hover:text-white transition-smooth">
                     {category}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>

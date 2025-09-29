@@ -1,6 +1,7 @@
 import EventCard from "./EventCard";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Filter, Calendar, MapPin } from "lucide-react";
+import { Link } from "react-router-dom";
 import conferenceImage from "@/assets/event-conference.jpg";
 import workshopImage from "@/assets/event-workshop.jpg";
 import seminarImage from "@/assets/event-seminar.jpg";
@@ -98,13 +99,17 @@ export default function EventsSection() {
           </div>
           
           <div className="flex gap-3">
-            <Button variant="outline" size="lg">
-              <Filter className="h-4 w-4 mr-2" />
-              Filter
+            <Button variant="outline" size="lg" asChild>
+              <Link to="/events">
+                <Filter className="h-4 w-4 mr-2" />
+                Filter
+              </Link>
             </Button>
-            <Button size="lg">
-              View All Events
-              <ArrowRight className="h-4 w-4 ml-2" />
+            <Button size="lg" asChild>
+              <Link to="/events">
+                View All Events
+                <ArrowRight className="h-4 w-4 ml-2" />
+              </Link>
             </Button>
           </div>
         </div>
@@ -135,16 +140,17 @@ export default function EventsSection() {
               { name: "Health", count: 98, icon: "🏥" },
               { name: "Education", count: 87, icon: "📚" },
             ].map((category, index) => (
-              <div
+              <Link
                 key={index}
-                className="bg-background rounded-xl p-6 text-center hover:shadow-card transition-smooth cursor-pointer group"
+                to={`/categories?filter=${category.name.toLowerCase()}`}
+                className="bg-background rounded-xl p-6 text-center hover:shadow-card transition-smooth cursor-pointer group block"
               >
                 <div className="text-3xl mb-3 group-hover:scale-110 transition-smooth">
                   {category.icon}
                 </div>
                 <h3 className="font-semibold mb-1">{category.name}</h3>
                 <p className="text-sm text-muted-foreground">{category.count} events</p>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
@@ -160,9 +166,11 @@ export default function EventsSection() {
             </p>
           </div>
           
-          <Button variant="event" size="lg">
-            <Calendar className="h-4 w-4 mr-2" />
-            View Calendar
+          <Button variant="event" size="lg" asChild>
+            <Link to="/events">
+              <Calendar className="h-4 w-4 mr-2" />
+              View Calendar
+            </Link>
           </Button>
         </div>
 
@@ -185,13 +193,17 @@ export default function EventsSection() {
               Easy setup, powerful tools, and seamless registration management.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button variant="hero" size="xl" className="bg-white text-primary hover:bg-white/90">
-                Create Your Event
-                <ArrowRight className="h-5 w-5 ml-2" />
+              <Button variant="hero" size="xl" className="bg-white text-primary hover:bg-white/90" asChild>
+                <Link to="/create-event">
+                  Create Your Event
+                  <ArrowRight className="h-5 w-5 ml-2" />
+                </Link>
               </Button>
-              <Button variant="outline" size="xl" className="border-white/30 text-white hover:bg-white/20">
-                <MapPin className="h-5 w-5 mr-2" />
-                Find Venues
+              <Button variant="outline" size="xl" className="border-white/30 text-white hover:bg-white/20" asChild>
+                <Link to="/contact">
+                  <MapPin className="h-5 w-5 mr-2" />
+                  Find Venues
+                </Link>
               </Button>
             </div>
           </div>

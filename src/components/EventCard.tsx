@@ -2,6 +2,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Calendar, MapPin, Users, Clock, Star } from "lucide-react";
+import { Link } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 
 interface EventCardProps {
   title: string;
@@ -30,6 +32,14 @@ export default function EventCard({
   rating = 4.8,
   featured = false
 }: EventCardProps) {
+  const { toast } = useToast();
+
+  const handleRegister = () => {
+    toast({
+      title: "Registration initiated!",
+      description: `You're about to register for "${title}". Registration system coming soon!`,
+    });
+  };
   return (
     <Card className="group overflow-hidden hover:shadow-elegant transition-smooth cursor-pointer border-0 shadow-card bg-gradient-card">
       <div className="relative">
@@ -98,10 +108,10 @@ export default function EventCard({
         </div>
 
         <div className="flex gap-3 pt-4">
-          <Button className="flex-1" size="sm">
+          <Button className="flex-1" size="sm" onClick={handleRegister}>
             Register Now
           </Button>
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="sm" onClick={handleRegister}>
             Learn More
           </Button>
         </div>

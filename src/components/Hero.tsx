@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Search, ArrowRight, Calendar, Users, Zap } from "lucide-react";
+import { Link } from "react-router-dom";
 import heroImage from "@/assets/hero-events.jpg";
 
 export default function Hero() {
@@ -42,9 +43,11 @@ export default function Hero() {
                     className="w-full pl-12 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder:text-white/60 focus:outline-none focus:ring-2 focus:ring-white/30 backdrop-blur-sm"
                   />
                 </div>
-                <Button variant="hero" size="lg" className="w-full sm:w-auto">
-                  Find Events
-                  <ArrowRight className="h-4 w-4 ml-1" />
+                <Button variant="hero" size="lg" className="w-full sm:w-auto" asChild>
+                  <Link to="/events">
+                    Find Events
+                    <ArrowRight className="h-4 w-4 ml-1" />
+                  </Link>
                 </Button>
               </div>
             </div>
@@ -52,13 +55,17 @@ export default function Hero() {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button variant="hero" size="xl">
-              Browse All Events
-              <Calendar className="h-5 w-5 ml-2" />
+            <Button variant="hero" size="xl" asChild>
+              <Link to="/events">
+                Browse All Events
+                <Calendar className="h-5 w-5 ml-2" />
+              </Link>
             </Button>
-            <Button variant="outline" size="xl" className="bg-white/10 border-white/30 text-white hover:bg-white/20">
-              Create Event
-              <Zap className="h-5 w-5 ml-2" />
+            <Button variant="outline" size="xl" className="bg-white/10 border-white/30 text-white hover:bg-white/20" asChild>
+              <Link to="/create-event">
+                Create Event
+                <Zap className="h-5 w-5 ml-2" />
+              </Link>
             </Button>
           </div>
 
